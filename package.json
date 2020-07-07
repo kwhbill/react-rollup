@@ -1,7 +1,7 @@
 {
   "name": "@i61/my-react-plugin",
   "version": "1.0.0",
-  "description": "开发react插件",
+  "description": "使用rollup开发react插件",
   "author": "kongweihao",
   "license": "MIT",
   "repository": {
