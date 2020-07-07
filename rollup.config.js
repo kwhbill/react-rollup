@@ -6,13 +6,13 @@ import resolve from '@rollup/plugin-node-resolve'
 import clear from "rollup-plugin-clear";
 import url from '@rollup/plugin-url'
 import svgr from '@svgr/rollup'
-import css from 'rollup-plugin-css-only' // 提取css，压缩能力不行
 import { terser } from 'rollup-plugin-terser'
+
 import _ from 'lodash';
 import pkg from './package.json'
 const externals = [
   'lodash',
-  'react'
+  'React'
 ]
 const pathResolve = p => path.resolve(__dirname, p)
 let name = _.last(_.split(pkg.name,'/'))
@@ -37,12 +37,16 @@ export default {
       targets: ["dist"]
     }),
     postcss({
+      extensions: ['.less', '.css'],
+      use: [
+        ['less', {
+          javascriptEnabled: true
+        }]
+      ],
       plugins: [],
       minimize: true,
       sourceMap: 'inline',
-    }),
-    css({
-      output: `dist/${name}.min.css`,
+      extract: `dist/${name}.min.css`,
     }),
     external({
       includeDependencies: true,
@@ -54,17 +58,6 @@ export default {
       extensions: ['.vue', '.js', '.jsx', '.json'],
     }),
     babel({
-
-      presets: [
-        'react-app',
-      ],
-      plugins: [
-        '@babel/plugin-proposal-object-rest-spread',
-        '@babel/plugin-proposal-optional-chaining',
-        '@babel/plugin-syntax-dynamic-import',
-        '@babel/plugin-proposal-class-properties',
-        'transform-react-remove-prop-types',
-      ],
       exclude: 'node_modules/**',
       runtimeHelpers: true,
     }),
